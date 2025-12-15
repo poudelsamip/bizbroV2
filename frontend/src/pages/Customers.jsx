@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 const Customers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReceiveModalOpen, setIsReceiveModalOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [receiveAmount, setReceiveAmount] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     businessName: "",
@@ -27,8 +30,47 @@ const Customers = () => {
         )
       : [];
 
-  const handleReceiveMoney = (customer) => {
-    console.log("Receiving money from:", customer.name);
+  const handleReceiveMoney = async () => {
+    if (!receiveAmount || parseFloat(receiveAmount) <= 0) {
+      alert("Please enter a valid amount");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `/api/customers/${selectedCustomer._id}/receivepayment`,
+        {
+          amount: parseInt(receiveAmount),
+          remark: "received payment from customer",
+        }
+      );
+
+      setCustomers(
+        customers.map((c) =>
+          c._id === selectedCustomer._id
+            ? { ...c, balance: c.balance - parseInt(receiveAmount) }
+            : c
+        )
+      );
+
+      setIsReceiveModalOpen(false);
+      setReceiveAmount("");
+      setSelectedCustomer(null);
+    } catch (error) {
+      alert("Failed to process payment");
+      console.error(error);
+    }
+  };
+
+  const openReceiveModal = (customer) => {
+    setSelectedCustomer(customer);
+    setIsReceiveModalOpen(true);
+  };
+
+  const closeReceiveModal = () => {
+    setIsReceiveModalOpen(false);
+    setReceiveAmount("");
+    setSelectedCustomer(null);
   };
 
   const handleInputChange = (e) => {
@@ -124,9 +166,9 @@ const Customers = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     Due Amount
                   </th>
-                  {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     Action
-                  </th> */}
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-gray-800 divide-y divide-gray-700">
@@ -188,14 +230,14 @@ const Customers = () => {
                           {customer.balance}
                         </span>
                       </td>
-                      {/* <td className="px-6 py-4">
+                      <td className="px-6 py-4">
                         <button
-                          onClick={() => handleReceiveMoney(customer)}
+                          onClick={() => openReceiveModal(customer)}
                           className="cursor-pointer px-4 py-2 bg-green-600 hover:bg-green-700 transition-colors text-white text-sm font-medium"
                         >
                           Receive
                         </button>
-                      </td> */}
+                      </td>
                     </tr>
                   ))
                 )}
@@ -308,6 +350,73 @@ const Customers = () => {
                   className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 transition-colors"
                 >
                   Add Customer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isReceiveModalOpen && selectedCustomer && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 addForm">
+          <div className="bg-gray-800 border border-gray-600 w-full max-w-md mx-4">
+            <div className="flex items-center justify-between p-6 border-b border-gray-600">
+              <h2 className="text-xl font-bold text-white">Receive Payment</h2>
+              <button
+                onClick={closeReceiveModal}
+                className="text-gray-400 hover:text-gray-200 transition-colors text-2xl"
+              >
+                x
+              </button>
+            </div>
+
+            <div className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Customer
+                  </label>
+                  <div className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white">
+                    {selectedCustomer.name}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Current Due Amount
+                  </label>
+                  <div className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white font-semibold">
+                    {selectedCustomer.balance}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Amount to Receive
+                  </label>
+                  <input
+                    type="number"
+                    value={receiveAmount}
+                    onChange={(e) => setReceiveAmount(e.target.value)}
+                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 outline-0"
+                    placeholder="Enter amount"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 mt-6">
+                <button
+                  onClick={closeReceiveModal}
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 text-white transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleReceiveMoney}
+                  className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition-colors"
+                >
+                  Confirm Payment Receive
                 </button>
               </div>
             </div>

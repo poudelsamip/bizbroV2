@@ -94,7 +94,8 @@ export const getSales = async (req, res) => {
   try {
     const sales = await Sale.find({ user: req.user._id })
       .populate("customer", "businessName balance")
-      .populate("products.product", "name");
+      .populate("products.product", "name")
+      .sort({ createdAt: -1 });
 
     res.json(sales);
   } catch (error) {

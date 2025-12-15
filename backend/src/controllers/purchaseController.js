@@ -89,7 +89,8 @@ export const getPurchases = async (req, res) => {
   try {
     const purchases = await Purchase.find({ user: req.user._id })
       .populate("supplier", "name")
-      .populate("itemInfo.item", "name");
+      .populate("itemInfo.item", "name")
+      .sort({ createdAt: -1 });
     res.json(purchases);
   } catch (error) {
     res.status(500).json({ message: error.message });

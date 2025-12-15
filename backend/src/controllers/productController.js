@@ -27,10 +27,9 @@ export const createProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({ user: req.user._id }).populate(
-      "supplier",
-      "name"
-    );
+    const products = await Product.find({ user: req.user._id })
+      .populate("supplier", "name")
+      .sort({ createdAt: -1 });
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
