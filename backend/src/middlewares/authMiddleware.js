@@ -5,9 +5,11 @@ export const protect = async (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-    return res
-      .status(401)
-      .json({ message: "user is not authorized : No token found" });
+    console.log(req.cookies);
+    console.log(token);
+    return res.status(401).json({
+      message: `user is not authorized : No token found, Token : ${token}`,
+    });
   }
 
   try {
