@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ranchers&display=swap");
+@import "tailwindcss";
+
+.rancers {
+  font-family: "Ranchers", "Outfit", sans-serif;
+}
+
+* {
+  font-family: "Outfit", sans-serif;
+}
+
+.addForm {
+  background-color: rgba(255, 255, 255, 0.144);
+}
+
+button {
+  cursor: pointer;
+}
