@@ -15,7 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoutes";
 import axios from "axios";
 import SellProduct from "./pages/SellProduct";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
