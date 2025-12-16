@@ -7,16 +7,19 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { register } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await register(name, email, password);
     } catch (error) {
       setError(error.response?.data?.message || "Registraion Failed");
     }
+    setLoading(false);
   };
 
   return (
@@ -69,7 +72,7 @@ const Register = () => {
             type="submit"
             className="cursor-pointer w-full py-2 bg-blue-600 text-white border border-blue-600 hover:bg-blue-700"
           >
-            Register
+            {!loading ? "Register" : "Registering ..."}
           </button>
         </form>
 

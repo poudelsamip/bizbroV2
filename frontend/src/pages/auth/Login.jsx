@@ -6,16 +6,19 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await login(email, password);
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
     }
+    setLoading(false);
   };
 
   return (
@@ -63,7 +66,7 @@ const Login = () => {
             type="submit"
             className="cursor-pointer w-full py-2 bg-blue-600 text-white border border-blue-600 hover:bg-blue-700"
           >
-            Login
+            {!loading ? "Login" : "logging in ..."}
           </button>
         </form>
 

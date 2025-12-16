@@ -8,6 +8,7 @@ const Inventory = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [stockToAdd, setStockToAdd] = useState("");
   const [stockCostPrice, setStockCostPrice] = useState("");
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     supplier: "",
@@ -133,156 +134,163 @@ const Inventory = () => {
       ]);
       setInventory(inventoryData.data);
       setSuppliers(suppliersData.data);
+      setLoading(false);
     };
     getInventoryAndSuppliers();
   }, []);
 
   return (
     <div>
-      <div className="max-w-7xl">
-        <div className="">
-          <div className="pb-6 flex items-center gap-4">
-            <div className="relative flex-1">
-              <input
-                type="text"
-                placeholder="Search by product name or supplier..."
-                className="w-90 px-4 py-2 bg-gray-700 border border-gray-600 outline-0 text-white placeholder-gray-400"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+      {loading ? (
+        <div>
+          <p className="text-gray-500">loading data ...</p>
+        </div>
+      ) : (
+        <div className="max-w-7xl">
+          <div className="">
+            <div className="pb-6 flex items-center gap-4">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  placeholder="Search by product name or supplier..."
+                  className="w-90 px-4 py-2 bg-gray-700 border border-gray-600 outline-0 text-white placeholder-gray-400"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-6 py-2 mr-1 bg-blue-600 hover:bg-blue-700 transition-colors text-white text-sm font-medium whitespace-nowrap"
+              >
+                ADD NEW PRODUCT
+              </button>
             </div>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-6 py-2 mr-1 bg-blue-600 hover:bg-blue-700 transition-colors text-white text-sm font-medium whitespace-nowrap"
-            >
-              ADD NEW PRODUCT
-            </button>
-          </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-700 border-b border-gray-600">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    S.N
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Product
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Supplier
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Cost Price
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Selling Price
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Quantity
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Stock Value
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-gray-800 divide-y divide-gray-700">
-                {filteredInventory.length === 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-700 border-b border-gray-600">
                   <tr>
-                    <td
-                      colSpan="8"
-                      className="px-6 py-8 text-center text-gray-400"
-                    >
-                      No products found
-                    </td>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      S.N
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      Product
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      Supplier
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      Cost Price
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      Selling Price
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      Quantity
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      Stock Value
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      Action
+                    </th>
                   </tr>
-                ) : (
-                  filteredInventory.map((item, index) => (
-                    <tr
-                      key={item._id}
-                      className="hover:bg-gray-700 transition-colors"
-                    >
-                      <td className="px-6 py-4">
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-white">
-                            {index + 1}
-                          </span>
-                        </div>
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <span className="text-sm font-medium text-white">
-                          {item.name}
-                        </span>
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <span className="text-sm text-gray-200">
-                          {item.supplier.name || item.supplier}
-                        </span>
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <span className="text-sm text-gray-200">
-                          Rs. {item.costPrice.toFixed(2)}
-                        </span>
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <span className="text-sm font-medium text-white">
-                          Rs. {item.sellingPrice.toFixed(2)}
-                        </span>
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <span className="text-sm font-semibold text-white">
-                          {item.quantity}
-                        </span>
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <span className="text-sm font-semibold text-white">
-                          Rs. {getTotalValue(item).toFixed(2)}
-                        </span>
-                      </td>
-
-                      <td className="px-6 py-4">
-                        <button
-                          onClick={() => handleAddStockModal(item)}
-                          className="cursor-pointer px-4 py-2 bg-blue-600 hover:bg-blue-700 transition-colors text-white text-sm font-medium"
-                        >
-                          Add
-                        </button>
+                </thead>
+                <tbody className="bg-gray-800 divide-y divide-gray-700">
+                  {filteredInventory.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan="8"
+                        className="px-6 py-8 text-center text-gray-400"
+                      >
+                        No products found
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                  ) : (
+                    filteredInventory.map((item, index) => (
+                      <tr
+                        key={item._id}
+                        className="hover:bg-gray-700 transition-colors"
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-white">
+                              {index + 1}
+                            </span>
+                          </div>
+                        </td>
 
-          <div className="px-6 py-4 bg-gray-700 border-t border-gray-600 flex justify-between items-center">
-            <p className="text-sm text-gray-300">
-              Showing {filteredInventory.length} of {inventory.length} products
-            </p>
-            <div className="flex gap-6 text-sm">
-              <span className="text-gray-300">
-                Total Stock Value:{" "}
-                <span className="font-semibold text-white">
-                  Rs.{" "}
-                  {filteredInventory
-                    .reduce((sum, item) => sum + getTotalValue(item), 0)
-                    .toFixed(2)}
+                        <td className="px-6 py-4">
+                          <span className="text-sm font-medium text-white">
+                            {item.name}
+                          </span>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <span className="text-sm text-gray-200">
+                            {item.supplier.name || item.supplier}
+                          </span>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <span className="text-sm text-gray-200">
+                            Rs. {item.costPrice.toFixed(2)}
+                          </span>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <span className="text-sm font-medium text-white">
+                            Rs. {item.sellingPrice.toFixed(2)}
+                          </span>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <span className="text-sm font-semibold text-white">
+                            {item.quantity}
+                          </span>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <span className="text-sm font-semibold text-white">
+                            Rs. {getTotalValue(item).toFixed(2)}
+                          </span>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() => handleAddStockModal(item)}
+                            className="cursor-pointer px-4 py-2 bg-blue-600 hover:bg-blue-700 transition-colors text-white text-sm font-medium"
+                          >
+                            Add
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="px-6 py-4 bg-gray-700 border-t border-gray-600 flex justify-between items-center">
+              <p className="text-sm text-gray-300">
+                Showing {filteredInventory.length} of {inventory.length}{" "}
+                products
+              </p>
+              <div className="flex gap-6 text-sm">
+                <span className="text-gray-300">
+                  Total Stock Value:{" "}
+                  <span className="font-semibold text-white">
+                    Rs.{" "}
+                    {filteredInventory
+                      .reduce((sum, item) => sum + getTotalValue(item), 0)
+                      .toFixed(2)}
+                  </span>
                 </span>
-              </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
+      )}
       {/* new product modal */}
       {isModalOpen && (
         <div className="fixed inset-0 addForm flex items-center justify-center z-50">
