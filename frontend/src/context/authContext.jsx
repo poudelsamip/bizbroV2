@@ -34,9 +34,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const sendVerificationCode = async (email) => {
+  const sendVerificationCode = async (email, action) => {
     try {
-      const response = await axios.post("/api/auth/sendcode", { email });
+      const response = await axios.post("/api/auth/sendcode", {
+        email,
+        action,
+      });
       if (!response.data.success) {
         return false;
       }

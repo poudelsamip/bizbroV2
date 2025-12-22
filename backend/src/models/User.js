@@ -17,11 +17,7 @@ const UserSchema = new mongoose.Schema(
     },
     verificationCode: String,
     verified: { type: Boolean, default: false },
-    // verificationCodeFor: {
-    //   type: String,
-    //   enum: ["register", "resetpassword", "emailchange"],
-    // },
-    // verificationCodeExpiryDate: Date,
+    registered: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

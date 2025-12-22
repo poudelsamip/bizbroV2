@@ -15,9 +15,9 @@ const generateCode = () => {
 
 export const sendEmailVerificationCode = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, action } = req.body;
     const user = await User.findOne({ email });
-    if (user && user.verified) {
+    if (user && action === "register" && user.registered) {
       return res.json({
         message: "user with this email already exists",
         success: false,
@@ -40,7 +40,7 @@ export const sendEmailVerificationCode = async (req, res) => {
         verified: false,
       });
       await sendEmailVerification(email, code);
-      res.json({ message: "email verification code sent" });
+      res.json({ success: true, message: "email verification code sent" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -118,6 +118,7 @@ export const registerUser = async (req, res) => {
     }
     user.verified = true;
     user.name = name;
+    user.registered = true;
     user.verificationCode = null;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);

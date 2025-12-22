@@ -23,7 +23,7 @@ const ForgotPassword = () => {
       setLoading(false);
       return;
     }
-    await sendVerificationCode(email);
+    await sendVerificationCode(email, "resetPassword");
     setDataEntered("email");
     setLoading(false);
   };

@@ -22,7 +22,7 @@ const Profile = () => {
 
   const handleVerifyCode = async () => {
     try {
-      await sendVerificationCode(email);
+      await sendVerificationCode(email, "changeEmail");
       setStep(2);
       setError("");
     } catch (error) {
