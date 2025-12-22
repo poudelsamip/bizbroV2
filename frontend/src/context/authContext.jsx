@@ -30,9 +30,12 @@ export const AuthProvider = ({ children }) => {
         setUser(res.data.user);
         localStorage.setItem("loggedIn", true);
         navigate("/dashboard");
-      } else {
-        throw new Error();
       }
+      if (res.data.askForVerification) {
+        throw new Error("verificationError");
+      }
+
+      throw new Error("invalidCredentials");
     } catch (error) {
       throw error;
     }

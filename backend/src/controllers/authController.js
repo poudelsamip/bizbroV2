@@ -37,7 +37,12 @@ export const sendEmailVerificationCode = async (req, res) => {
   try {
     const { email, action, name, password } = req.body;
     const user = await User.findOne({ email });
-    if (user && action === "register" && user.registered) {
+    if (
+      user &&
+      action === "register" &&
+      user.verificationCode &&
+      user.verificationCode.length > 0
+    ) {
       return res.json({
         message: "user with this email already exists",
         success: false,
@@ -78,6 +83,9 @@ export const verifyEmailCode = async (req, res) => {
     //   });
     // }
     if (user && user.verificationCode == code) {
+      user.verified = true;
+      user.registered = true;
+      await user.save();
       return res.json({ verified: true });
     } else {
       return res.json({ verified: false });
@@ -171,22 +179,33 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ message: "All fields required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields required" });
     }
 
     const user = await User.findOne({ email });
 
     if (user && user.loginProvider === "google") {
-      return res.json({ message: "Invalid Credentail" });
+      return res.json({ success: false, message: "Invalid Credentail" });
     }
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.json({ success: false, message: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.json({ success: false, message: "Invalid credentials" });
+    }
+
+    if (user && !user.verified) {
+      return res.json({
+        askForVerification: true,
+        success: false,
+        message:
+          "account is not verified. please verify before continuing. Verification code has been sent to your email previously",
+      });
     }
 
     const token = generateToken(user._id, user.email, user.name);

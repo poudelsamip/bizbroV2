@@ -24,10 +24,10 @@ const Register = () => {
         setError("All fields are required");
         return;
       }
-      if (await sendVerificationCode(email, name, password, "register")) {
+      if (await sendVerificationCode(email, "register", name, password)) {
         setDataEntered(true);
       } else {
-        setError("error");
+        setError("User with this email already exists");
         setLoading(false);
         return;
       }
