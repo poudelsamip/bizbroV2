@@ -14,6 +14,9 @@ import transactionRoutes from "./src/routes/transactionRoutes.js";
 import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 import cookieParser from "cookie-parser";
 
+import passport from "passport";
+import "./src/config/passport.js";
+
 const app = express();
 
 const frontendUrl = process.env.FRONTEND_URL;
@@ -37,6 +40,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 
 connectDB();
 

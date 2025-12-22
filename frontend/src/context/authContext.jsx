@@ -26,18 +26,29 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const res = await axios.post("/api/auth/login", { email, password });
-      setUser(res.data.user);
-      localStorage.setItem("loggedIn", true);
-      navigate("/dashboard");
+      if (res.data.success) {
+        setUser(res.data.user);
+        localStorage.setItem("loggedIn", true);
+        navigate("/dashboard");
+      } else {
+        throw new Error();
+      }
     } catch (error) {
       throw error;
     }
   };
 
-  const sendVerificationCode = async (email, action) => {
+  const sendVerificationCode = async (
+    email,
+    action,
+    name = "",
+    password = ""
+  ) => {
     try {
       const response = await axios.post("/api/auth/sendcode", {
         email,
+        name,
+        password,
         action,
       });
       if (!response.data.success) {

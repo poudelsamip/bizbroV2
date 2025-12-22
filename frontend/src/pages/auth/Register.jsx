@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
+import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -23,7 +24,7 @@ const Register = () => {
         setError("All fields are required");
         return;
       }
-      if (await sendVerificationCode(email, "register")) {
+      if (await sendVerificationCode(email, name, password, "register")) {
         setDataEntered(true);
       } else {
         setError("error");
@@ -48,6 +49,12 @@ const Register = () => {
     setVerificationLoading(false);
   };
 
+  const handleLoginWithGoogle = async () => {
+    window.location.href = `${
+      import.meta.env.VITE_BACKEND_URL
+    }/api/auth/google`;
+  };
+
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center">
       {!dataEntered ? (
@@ -55,6 +62,16 @@ const Register = () => {
           <h2 className="text-2xl font-bold text-white mb-6 text-center">
             Create Account
           </h2>
+
+          <button
+            onClick={handleLoginWithGoogle}
+            className="flex items-center justify-center gap-4 w-full bg-gray-300 hover:bg-gray-400 py-2 mb-4"
+          >
+            <FcGoogle size={25} />
+            <span className="font-semibold">Continue With Google</span>
+          </button>
+
+          <p className="text-center text-white text-xl">---- OR ----</p>
 
           {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
 

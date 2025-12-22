@@ -10,12 +10,32 @@ const generateToken = (id, email, name) => {
 };
 
 const generateCode = () => {
-  return Math.floor(Math.random() * 100000);
+  return Math.floor(100000 + Math.random() * 900000);
+};
+
+export const googleCallback = async (req, res) => {
+  try {
+    if (!req.user) {
+      res.redirect(`${process.env.FRONTEND_URL}/login`);
+    }
+    const token = generateToken(req.user._id, req.user.email, req.user.name);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+  } catch (error) {
+    console.log("Login error");
+    console.log(error);
+    res.redirect(`${process.env.FRONTEND_URL}/login`);
+  }
 };
 
 export const sendEmailVerificationCode = async (req, res) => {
   try {
-    const { email, action } = req.body;
+    const { email, action, name, password } = req.body;
     const user = await User.findOne({ email });
     if (user && action === "register" && user.registered) {
       return res.json({
@@ -34,8 +54,8 @@ export const sendEmailVerificationCode = async (req, res) => {
       const code = generateCode();
       await User.create({
         email,
-        name: "new user name",
-        password: "new user password",
+        name,
+        password: await bcrypt.hash(password, 10),
         verificationCode: code,
         verified: false,
       });
@@ -76,8 +96,7 @@ export const resetPassword = async (req, res) => {
       return res.json({ message: "User not found" });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     user.password = hashedPassword;
     await user.save();
@@ -131,8 +150,8 @@ export const registerUser = async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .status(201)
@@ -151,12 +170,16 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     if (!email || !password) {
       return res.status(400).json({ message: "All fields required" });
     }
 
     const user = await User.findOne({ email });
+
+    if (user && user.loginProvider === "google") {
+      return res.json({ message: "Invalid Credentail" });
+    }
+
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -172,12 +195,13 @@ export const loginUser = async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .status(200)
       .json({
+        success: true,
         user: {
           _id: user._id,
           name: user.name,
@@ -193,9 +217,9 @@ export const logoutUser = async (req, res) => {
   res
     .cookie("token", "", {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      expires: new Date(0),
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     })
     .status(200)
     .json({ message: "Logged out successfully" });

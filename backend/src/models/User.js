@@ -2,19 +2,19 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
+    name: String,
     email: {
       type: String,
       required: true,
       unique: true,
     },
-    password: {
+    loginProvider: {
       type: String,
-      required: true,
+      enum: ["local", "google"],
+      default: "local",
     },
+    password: String,
+    googleId: String,
     verificationCode: String,
     verified: { type: Boolean, default: false },
     registered: { type: Boolean, default: false },

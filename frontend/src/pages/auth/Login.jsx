@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,21 +22,29 @@ const Login = () => {
     setLoading(false);
   };
 
+  const handleLoginWithGoogle = async () => {
+    window.location.href = `${
+      import.meta.env.VITE_BACKEND_URL
+    }/api/auth/google`;
+  };
+
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center">
       <div className="w-full max-w-md p-8 bg-slate-800 border border-slate-500">
         <h2 className="text-2xl font-bold text-white mb-6 text-center">
           Welcome Back
         </h2>
-        <p className="text-gray-400 text-center bg-gray-700">
-          for preloaded data :
-        </p>
-        <p className="text-gray-400 text-center bg-gray-700">
-          Email : demo.user@gmail.com
-        </p>
-        <p className="text-gray-400 text-center bg-gray-700">
-          Password : Demo@123
-        </p>
+
+        <button
+          onClick={handleLoginWithGoogle}
+          className="flex items-center justify-center gap-4 w-full bg-gray-300 hover:bg-gray-400 py-2 mb-4"
+        >
+          <FcGoogle size={25} />
+          <span className="font-semibold">Continue With Google</span>
+        </button>
+
+        <p className="text-center text-white text-xl">---- OR ----</p>
+
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
