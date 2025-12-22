@@ -8,6 +8,7 @@ import {
   MdLocalShipping,
 } from "react-icons/md";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
 
 const linkClass = ({ isActive }) =>
   `px-4 py-3 border-b border-slate-700 hover:bg-slate-700 flex items-center gap-3 ${
@@ -16,52 +17,59 @@ const linkClass = ({ isActive }) =>
 
 const Sidebar = () => {
   return (
-    <aside className="bg-slate-800 border-r border-slate-700 w-60 overflow-hidden">
+    <aside className="flex flex-col bg-slate-800 border-r border-slate-700 w-60 overflow-hidden">
       <div className="h-14 flex items-center px-4 border-b border-slate-700 font-bold text-4xl">
         👊 BizBro
       </div>
+      <div className="flex-1 overflow-y-hidden">
+        <nav className="flex flex-col">
+          <NavLink to="/dashboard" className={linkClass}>
+            <BiSolidDashboard size={20} />
+            <span>Dashboard</span>
+          </NavLink>
 
-      <nav className="flex flex-col">
-        <NavLink to="/dashboard" className={linkClass}>
-          <BiSolidDashboard size={20} />
-          <span>Dashboard</span>
-        </NavLink>
+          <NavLink to="/customers" className={linkClass}>
+            <MdPeople size={20} />
+            <span>Customers</span>
+          </NavLink>
 
-        <NavLink to="/customers" className={linkClass}>
-          <MdPeople size={20} />
-          <span>Customers</span>
-        </NavLink>
+          <NavLink to="/suppliers" className={linkClass}>
+            <MdLocalShipping size={20} />
+            <span>Suppliers</span>
+          </NavLink>
 
-        <NavLink to="/suppliers" className={linkClass}>
-          <MdLocalShipping size={20} />
-          <span>Suppliers</span>
-        </NavLink>
+          <NavLink to="/inventory" className={linkClass}>
+            <MdInventory2 size={20} />
+            <span>Inventory</span>
+          </NavLink>
 
-        <NavLink to="/inventory" className={linkClass}>
-          <MdInventory2 size={20} />
-          <span>Inventory</span>
-        </NavLink>
+          <NavLink to="/purchases" className={linkClass}>
+            <MdShoppingCart size={20} />
+            <span>Purchases</span>
+          </NavLink>
 
-        <NavLink to="/purchases" className={linkClass}>
-          <MdShoppingCart size={20} />
-          <span>Purchases</span>
-        </NavLink>
+          <NavLink to="/sell" className={linkClass}>
+            <MdSell size={20} />
+            <span>Sell</span>
+          </NavLink>
 
-        <NavLink to="/sell" className={linkClass}>
-          <MdSell size={20} />
-          <span>Sell</span>
-        </NavLink>
+          <NavLink to="/sales" className={linkClass}>
+            <MdSell size={20} />
+            <span>Sales</span>
+          </NavLink>
 
-        <NavLink to="/sales" className={linkClass}>
-          <MdSell size={20} />
-          <span>Sales</span>
+          <NavLink to="/transactions" className={linkClass}>
+            <FaMoneyBillTransfer size={20} />
+            <span>Transactions</span>
+          </NavLink>
+        </nav>
+      </div>
+      <div className="border-t border-slate-500">
+        <NavLink to="/profile" className={linkClass}>
+          <FaUser size={20} />
+          <span>Profile</span>
         </NavLink>
-
-        <NavLink to="/transactions" className={linkClass}>
-          <FaMoneyBillTransfer size={20} />
-          <span>Transactions</span>
-        </NavLink>
-      </nav>
+      </div>
     </aside>
   );
 };

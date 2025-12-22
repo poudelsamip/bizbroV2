@@ -15,6 +15,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    verificationCode: String,
+    verified: { type: Boolean, default: false },
+    // verificationCodeFor: {
+    //   type: String,
+    //   enum: ["register", "resetpassword", "emailchange"],
+    // },
+    // verificationCodeExpiryDate: Date,
   },
   { timestamps: true }
 );

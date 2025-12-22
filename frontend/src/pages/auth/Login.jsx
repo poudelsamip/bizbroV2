@@ -70,12 +70,22 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="mt-4 text-slate-400 text-center">
-          Don’t have an account?{" "}
-          <Link to="/register" className="text-blue-500 hover:underline">
-            Register
-          </Link>
-        </p>
+        <div className="flex justify-between text-sm mt-1">
+          <p className="">
+            <Link
+              to="/forgotpassword"
+              className="text-blue-500 hover:underline"
+            >
+              Forgot Password ?
+            </Link>
+          </p>
+          <p className="text-slate-400">
+            Don’t have an account?{" "}
+            <Link to="/register" className="text-blue-500 hover:underline">
+              Register
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

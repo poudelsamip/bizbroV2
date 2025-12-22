@@ -14,6 +14,8 @@ import Layout from "./layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import axios from "axios";
 import SellProduct from "./pages/SellProduct";
+import Profile from "./pages/Profile";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.withCredentials = true;
@@ -24,6 +26,7 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgotpassword" element={<ForgotPassword />} />
 
       <Route
         element={
@@ -40,6 +43,7 @@ function App() {
         <Route path="/purchases" element={<Purchases />} />
         <Route path="/suppliers" element={<Supplires />} />
         <Route path="/transactions" element={<Transaction />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   );

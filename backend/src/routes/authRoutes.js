@@ -4,6 +4,10 @@ import {
   loginUser,
   logoutUser,
   getProfile,
+  sendEmailVerificationCode,
+  verifyEmailCode,
+  resetPassword,
+  changeEmail,
 } from "../controllers/authController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
@@ -13,5 +17,9 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.get("/profile", getProfile);
+router.post("/sendcode", sendEmailVerificationCode);
+router.post("/verifycode", verifyEmailCode);
+router.post("/resetpassword", resetPassword);
+router.post("/changeemail", protect, changeEmail);
 
 export default router;
