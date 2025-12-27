@@ -18,8 +18,10 @@ const Topbar = () => {
   const pageTitle = PAGE_TITLES[location.pathname] || "";
 
   return (
-    <header className="h-14 bg-slate-800 border-b border-slate-700 flex items-center justify-between px-4">
-      <h1 className="text-white font-bold text-2xl uppercase">{pageTitle}</h1>
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 lg:px-8 shadow-sm">
+      <h1 className="text-gray-900 font-semibold text-xl lg:text-2xl">
+        {pageTitle}
+      </h1>
     </header>
   );
 };

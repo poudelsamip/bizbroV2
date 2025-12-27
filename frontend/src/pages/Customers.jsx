@@ -130,60 +130,60 @@ const Customers = () => {
   return (
     <div>
       {loading ? (
-        <div>
-          <p className="text-gray-500">loading data ...</p>
+        <div className="flex items-center justify-center py-12">
+          <p className="text-gray-500">Loading data...</p>
         </div>
       ) : (
-        <div className="max-w-7xl">
-          <div className="">
-            <div className="pb-6 flex items-center gap-4">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  placeholder="Search by name, business, phone, or email..."
-                  className="w-90 px-4 py-2 bg-gray-700 border border-gray-600 outline-0 text-white placeholder-gray-400"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="px-6 py-2 mr-1 bg-blue-600 hover:bg-blue-700 transition-colors text-white text-sm font-medium"
-              >
-                ADD NEW CUSTOMER
-              </button>
+        <div>
+          <div className="mb-6 flex flex-col sm:flex-row items-center gap-4">
+            <div className="relative flex-1 w-full">
+              <input
+                type="text"
+                placeholder="Search by name, business, phone, or email..."
+                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg outline-none text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 transition-all text-white text-sm font-semibold whitespace-nowrap rounded-lg shadow-md hover:shadow-lg"
+            >
+              + Add New Customer
+            </button>
+          </div>
 
+          <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-700 border-b border-gray-600">
+                <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       S.N
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Customer
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Contact
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Address
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Due Amount
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-gray-800 divide-y divide-gray-700">
+                <tbody className="bg-white divide-y divide-gray-200">
                   {filteredCustomers.length === 0 ? (
                     <tr>
                       <td
                         colSpan="6"
-                        className="px-6 py-8 text-center text-gray-400"
+                        className="px-6 py-12 text-center text-gray-500"
                       >
                         No customers found
                       </td>
@@ -192,23 +192,21 @@ const Customers = () => {
                     filteredCustomers.map((customer, index) => (
                       <tr
                         key={customer._id}
-                        className="hover:bg-gray-700 transition-colors"
+                        className="hover:bg-gray-50 transition-colors"
                       >
                         <td className="px-6 py-4">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium text-white">
-                              {index + 1}
-                            </span>
-                          </div>
+                          <span className="text-sm font-medium text-gray-900">
+                            {index + 1}
+                          </span>
                         </td>
 
                         <td className="px-6 py-4">
                           <div className="flex flex-col">
-                            <span className="text-sm font-medium text-white">
+                            <span className="text-sm font-semibold text-gray-900">
                               {customer.name}
                             </span>
                             {customer.businessName && (
-                              <span className="text-sm text-gray-400 flex items-center gap-1 mt-1">
+                              <span className="text-sm text-gray-600 mt-1">
                                 {customer.businessName}
                               </span>
                             )}
@@ -217,30 +215,30 @@ const Customers = () => {
 
                         <td className="px-6 py-4">
                           <div className="flex flex-col gap-1">
-                            <span className="text-sm text-gray-200 flex items-center gap-2">
+                            <span className="text-sm text-gray-700">
                               {customer.phone}
                             </span>
                             {customer.email && (
-                              <span className="text-sm text-gray-300 flex items-center gap-2">
+                              <span className="text-sm text-gray-600">
                                 {customer.email}
                               </span>
                             )}
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <span className="text-sm text-gray-200 flex items-start gap-2">
-                            <span className="max-w-xs">{customer.address}</span>
+                          <span className="text-sm text-gray-700 max-w-xs">
+                            {customer.address}
                           </span>
                         </td>
                         <td className="px-6 py-4">
-                          <span className="text-sm font-semibold text-white">
-                            {customer.balance}
+                          <span className="text-sm font-bold text-gray-900">
+                            Rs. {customer.balance?.toFixed(2) || "0.00"}
                           </span>
                         </td>
                         <td className="px-6 py-4">
                           <button
                             onClick={() => openReceiveModal(customer)}
-                            className="cursor-pointer px-4 py-2 bg-green-600 hover:bg-green-700 transition-colors text-white text-sm font-medium"
+                            className="cursor-pointer px-4 py-2 bg-green-600 hover:bg-green-700 transition-all text-white text-sm font-medium rounded-lg shadow-sm hover:shadow"
                           >
                             Receive
                           </button>
@@ -252,32 +250,32 @@ const Customers = () => {
               </table>
             </div>
 
-            <div className="px-6 py-4 bg-gray-700 border-t border-gray-600">
-              <p className="text-sm text-gray-300">
-                Showing {filteredCustomers.length} of {customers.length}{" "}
-                customers
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+              <p className="text-sm text-gray-600">
+                Showing <span className="font-semibold">{filteredCustomers.length}</span> of{" "}
+                <span className="font-semibold">{customers.length}</span> customers
               </p>
             </div>
           </div>
         </div>
       )}
       {isModalOpen && (
-        <div className="addForm fixed inset-0 flex items-center justify-center z-50">
-          <div className="bg-gray-800 border border-gray-600 w-full max-w-md mx-4">
-            <div className="flex items-center justify-between p-6 border-b border-gray-600">
-              <h2 className="text-xl font-bold text-white">Add New Customer</h2>
+        <div className="fixed inset-0 addForm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-gray-200">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Add New Customer</h2>
               <button
                 onClick={handleCancel}
-                className="text-gray-400 hover:text-gray-200 transition-colors text-2xl"
+                className="text-gray-400 hover:text-gray-600 transition-colors text-2xl leading-none"
               >
-                x
+                ×
               </button>
             </div>
 
             <div className="p-6">
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Name
                   </label>
                   <input
@@ -285,13 +283,13 @@ const Customers = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 outline-0  "
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="Enter customer name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Business Name
                   </label>
                   <input
@@ -299,13 +297,13 @@ const Customers = () => {
                     name="businessName"
                     value={formData.businessName}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 outline-0  "
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="Enter business name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Phone
                   </label>
                   <input
@@ -313,13 +311,13 @@ const Customers = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 outline-0  "
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="Enter phone number"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Email
                   </label>
                   <input
@@ -327,20 +325,20 @@ const Customers = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 outline-0  "
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="Enter email address"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Address
                   </label>
                   <input
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 outline-0   resize-none"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="Enter address"
                   />
                 </div>
@@ -349,13 +347,13 @@ const Customers = () => {
               <div className="flex items-center justify-end gap-3 mt-6">
                 <button
                   onClick={handleCancel}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 text-white transition-colors"
+                  className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 rounded-lg font-medium transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAddCustomer}
-                  className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                  className="px-5 py-2.5 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
                 >
                   Add Customer
                 </button>
@@ -366,47 +364,47 @@ const Customers = () => {
       )}
 
       {isReceiveModalOpen && selectedCustomer && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 addForm">
-          <div className="bg-gray-800 border border-gray-600 w-full max-w-md mx-4">
-            <div className="flex items-center justify-between p-6 border-b border-gray-600">
-              <h2 className="text-xl font-bold text-white">Receive Payment</h2>
+        <div className="fixed inset-0 addForm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-gray-200">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Receive Payment</h2>
               <button
                 onClick={closeReceiveModal}
-                className="text-gray-400 hover:text-gray-200 transition-colors text-2xl"
+                className="text-gray-400 hover:text-gray-600 transition-colors text-2xl leading-none"
               >
-                x
+                ×
               </button>
             </div>
 
             <div className="p-6">
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Customer
                   </label>
-                  <div className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white">
+                  <div className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 font-medium">
                     {selectedCustomer.name}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Current Due Amount
                   </label>
-                  <div className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white font-semibold">
-                    {selectedCustomer.balance}
+                  <div className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 font-bold">
+                    Rs. {selectedCustomer.balance?.toFixed(2) || "0.00"}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Amount to Receive
                   </label>
                   <input
                     type="number"
                     value={receiveAmount}
                     onChange={(e) => setReceiveAmount(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 outline-0"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="Enter amount"
                     min="0"
                   />
@@ -416,15 +414,15 @@ const Customers = () => {
               <div className="flex items-center justify-end gap-3 mt-6">
                 <button
                   onClick={closeReceiveModal}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 border border-gray-600 text-white transition-colors"
+                  className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 rounded-lg font-medium transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleReceiveMoney}
-                  className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition-colors"
+                  className="px-5 py-2.5 bg-green-600 text-white hover:bg-green-700 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
                 >
-                  Confirm Payment Receive
+                  Confirm Payment
                 </button>
               </div>
             </div>

@@ -151,17 +151,19 @@ const SellProduct = () => {
   };
 
   return (
-    <div className="bg-gray-900">
-      <div className="max-w-5xl bg-gray-800 p-8 shadow-xl">
-        <div className="flex gap-4 mb-6">
+    <div>
+      <div className="max-w-5xl bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="flex-1">
-            <label className="block text-sm text-gray-300 mb-2">Customer</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Customer <span className="text-red-500">*</span>
+            </label>
             <select
               value={formData.customerId}
               onChange={(e) =>
                 setFormData({ ...formData, customerId: e.target.value })
               }
-              className="w-full p-3 bg-gray-700 text-white"
+              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             >
               <option value="">Select customer</option>
               {customers.map((c) => (
@@ -173,176 +175,193 @@ const SellProduct = () => {
             </select>
           </div>
 
-          <div className="w-48">
-            <label className="block text-sm text-gray-300 mb-2">Date</label>
+          <div className="w-full sm:w-48">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Date
+            </label>
             <input
               type="date"
               value={formData.date}
               onChange={(e) =>
                 setFormData({ ...formData, date: e.target.value })
               }
-              className="w-full p-3 bg-gray-700 text-white"
+              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
         </div>
 
         {/* products */}
         <div className="mb-6">
-          {selectedProducts.map((item, index) => {
-            const availableStock = getAvailableStock(item.productId);
-            const isOutOfStock = item.productId && availableStock === 0;
+          <div className="space-y-4">
+            {selectedProducts.map((item, index) => {
+              const availableStock = getAvailableStock(item.productId);
+              const isOutOfStock = item.productId && availableStock === 0;
 
-            return (
-              <div key={index} className="mb-4">
-                <div className="flex gap-3 items-end">
-                  {/* single product */}
-                  <div className="flex-1">
-                    <label className="block text-xs text-gray-400 mb-1">
-                      Product
-                    </label>
-                    <select
-                      value={item.productId}
-                      onChange={(e) =>
-                        handleProductChange(index, "productId", e.target.value)
-                      }
-                      className="w-full p-3 bg-gray-700 text-white"
-                    >
-                      <option value="">Select product</option>
-                      {products.map((p) => (
-                        <option key={p._id} value={p._id}>
-                          {p.name}{" "}
-                          {p.quantity === 0
-                            ? "(Out of Stock)"
-                            : `(Stock: ${p.quantity})`}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+              return (
+                <div
+                  key={index}
+                  className="p-4 border border-gray-200 rounded-lg bg-gray-50"
+                >
+                  <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    {/* single product */}
+                    <div className="flex-1 w-full">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Product <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={item.productId}
+                        onChange={(e) =>
+                          handleProductChange(index, "productId", e.target.value)
+                        }
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      >
+                        <option value="">Select product</option>
+                        {products.map((p) => (
+                          <option key={p._id} value={p._id}>
+                            {p.name}{" "}
+                            {p.quantity === 0
+                              ? "(Out of Stock)"
+                              : `(Stock: ${p.quantity})`}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-                  <div className="w-28">
-                    <label className="block text-xs text-gray-400 mb-1">
-                      Price
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      value={item.price}
-                      onChange={(e) =>
-                        handleProductChange(
-                          index,
-                          "price",
-                          Number(e.target.value) || 0
-                        )
-                      }
-                      className="w-full p-3 bg-gray-700 text-white"
-                    />
-                  </div>
+                    <div className="w-full sm:w-32">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Price
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={item.price}
+                        onChange={(e) =>
+                          handleProductChange(
+                            index,
+                            "price",
+                            Number(e.target.value) || 0
+                          )
+                        }
+                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      />
+                    </div>
 
-                  <div className="w-24">
-                    <label className="block text-xs text-gray-400 mb-1">
-                      Quantity
-                      {item.productId && (
-                        <>
-                          <br />
+                    <div className="w-full sm:w-32">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Quantity
+                        {item.productId && (
                           <span
-                            className={`${
-                              isOutOfStock ? "text-red-400" : "text-green-400"
+                            className={`ml-2 text-xs ${
+                              isOutOfStock ? "text-red-600" : "text-green-600"
                             }`}
                           >
                             ({availableStock} in stock)
                           </span>
-                        </>
-                      )}
-                    </label>
-                    <input
-                      type="number"
-                      min="1"
-                      max={availableStock || 1}
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleProductChange(
-                          index,
-                          "quantity",
-                          Number(e.target.value) || 1
-                        )
-                      }
-                      disabled={isOutOfStock}
-                      className={`w-full p-3 ${
-                        isOutOfStock ? "bg-gray-600" : "bg-gray-700"
-                      } text-white`}
-                    />
-                  </div>
+                        )}
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max={availableStock || 1}
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleProductChange(
+                            index,
+                            "quantity",
+                            Number(e.target.value) || 1
+                          )
+                        }
+                        disabled={isOutOfStock}
+                        className={`w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                          isOutOfStock
+                            ? "bg-gray-100 cursor-not-allowed"
+                            : "bg-white"
+                        }`}
+                      />
+                    </div>
 
-                  <div className="w-36">
-                    <label className="block text-xs text-gray-400 mb-1">
-                      Total
-                    </label>
-                    <input
-                      type="text"
-                      disabled
-                      value={`Rs. ${(item.price * item.quantity).toFixed(2)}`}
-                      className="w-full p-3 bg-gray-600 text-gray-300"
-                    />
+                    <div className="w-full sm:w-40">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Total
+                      </label>
+                      <input
+                        type="text"
+                        disabled
+                        value={`Rs. ${(item.price * item.quantity).toFixed(2)}`}
+                        className="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 font-semibold cursor-not-allowed"
+                      />
+                    </div>
+                    {selectedProducts.length > 1 && (
+                      <button
+                        onClick={() => removeProductRow(index)}
+                        className="px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all shadow-sm hover:shadow"
+                      >
+                        Remove
+                      </button>
+                    )}
                   </div>
-                  {selectedProducts.length > 1 && (
-                    <button
-                      onClick={() => removeProductRow(index)}
-                      className="px-4 py-3 bg-red-600 text-white"
-                    >
-                      X
-                    </button>
-                  )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
 
           <button
             onClick={addProductRow}
-            className="mt-2 bg-green-600 px-6 py-2 text-white"
+            className="mt-4 px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-all shadow-sm hover:shadow"
           >
             + Add Product
           </button>
         </div>
 
-        <div className="bg-gray-700 p-4 flex justify-between text-white mb-6">
-          <span>Total Amount</span>
-          <span className="text-xl font-bold">
+        <div className="bg-gray-50 border border-gray-200 p-6 rounded-lg flex justify-between items-center mb-6">
+          <span className="text-lg font-semibold text-gray-900">Total Amount</span>
+          <span className="text-2xl font-bold text-gray-900">
             Rs. {calculateTotal().toFixed(2)}
           </span>
         </div>
 
-        <div className="mb-6 flex gap-6 text-white">
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              value="cash"
-              checked={formData.paymentMethod === "cash"}
-              onChange={(e) =>
-                setFormData({ ...formData, paymentMethod: e.target.value })
-              }
-            />
-            Cash
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Payment Method <span className="text-red-500">*</span>
           </label>
+          <div className="flex gap-6">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                value="cash"
+                checked={formData.paymentMethod === "cash"}
+                onChange={(e) =>
+                  setFormData({ ...formData, paymentMethod: e.target.value })
+                }
+                className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-gray-700 font-medium">Cash</span>
+            </label>
 
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              value="credit"
-              checked={formData.paymentMethod === "credit"}
-              onChange={(e) =>
-                setFormData({ ...formData, paymentMethod: e.target.value })
-              }
-            />
-            Credit
-          </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                value="credit"
+                checked={formData.paymentMethod === "credit"}
+                onChange={(e) =>
+                  setFormData({ ...formData, paymentMethod: e.target.value })
+                }
+                className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-gray-700 font-medium">Credit</span>
+            </label>
+          </div>
         </div>
 
-        <div className="flex gap-4 flex-col items-end">
-          {error && <span className="text-red-400 mr-4 -mb-4">{error}</span>}
+        <div className="flex flex-col items-end gap-4">
+          {error && (
+            <div className="w-full p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              {error}
+            </div>
+          )}
           <button
             onClick={handleSubmit}
-            className="w-fit bg-blue-600 px-8 py-3 text-white font-medium"
+            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
           >
             Create Sale & Generate Bill
           </button>

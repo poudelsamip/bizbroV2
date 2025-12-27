@@ -1,92 +1,138 @@
 import React from "react";
+import { FaTimes, FaPrint } from "react-icons/fa";
 
 const SalesReceipt = ({ saleData, onClose }) => {
   const handlePrint = () => {
     window.print();
   };
 
-  const totalAmount = saleData.products.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  const totalAmount = saleData.products?.reduce(
+    (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
     0
-  );
+  ) || 0;
+
+  const receivedAmount = saleData.receivedAmount || totalAmount;
+  const dueAmount = totalAmount - receivedAmount;
 
   const receiptId = saleData._id || `Bill-${Date.now()}`;
+  const receiptDate = saleData.createdAt 
+    ? new Date(saleData.createdAt).toLocaleDateString()
+    : new Date().toLocaleDateString();
 
   return (
-    <div className="fixed inset-0 bg-gray-900 flex items-center justify-center p-6 z-50 overflow-y-auto">
-      <div className="relative max-w-4xl w-full my-8">
-        <div className="absolute -right-24 flex flex-col justify-end gap-4 mb-4 print:hidden">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 z-50 overflow-y-auto print:bg-white print:backdrop-blur-none">
+      <div className="relative max-w-2xl w-full my-8 print:my-0">
+        {/* Action Buttons */}
+        <div className="absolute -right-4 sm:-right-32 top-0 flex flex-col gap-3 mb-4 print:hidden">
           <button
             onClick={onClose}
-            className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white transition-colors"
+            className="px-5 py-2.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-lg font-medium transition-all shadow-md hover:shadow-lg flex items-center gap-2"
           >
+            <FaTimes size={14} />
             Close
           </button>
           <button
             onClick={handlePrint}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all shadow-md hover:shadow-lg flex items-center gap-2"
           >
+            <FaPrint size={14} />
             Print
           </button>
         </div>
 
-        <div className="bg-white text-black p-8">
-          <div className="text-center border-b border-black pb-4 mb-6">
-            <h1 className="text-3xl font-bold">SALES RECEIPT</h1>
+        {/* Receipt Card */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8 sm:p-12 print:shadow-none print:rounded-none">
+          {/* Header */}
+          <div className="text-center border-b-2 border-gray-200 pb-6 mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+              BIZBRO
+            </h1>
+            <p className="text-sm text-gray-600 uppercase tracking-wider">
+              Sales Invoice
+            </p>
           </div>
 
-          <div className="flex justify-between mb-6 text-sm">
+          {/* Receipt Info */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <div>
-              <span className="font-semibold">Receipt No: </span>
-              <span>#{receiptId}</span>
+              <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
+                Receipt No
+              </p>
+              <p className="text-sm font-semibold text-gray-900">
+                #{receiptId.slice(-8).toUpperCase()}
+              </p>
             </div>
-            <div>
-              <span className="font-semibold">Date: </span>
-              <span>{new Date().toLocaleDateString()}</span>
+            <div className="text-right sm:text-left">
+              <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
+                Date
+              </p>
+              <p className="text-sm font-semibold text-gray-900">
+                {receiptDate}
+              </p>
             </div>
           </div>
 
-          <div className="mb-6">
-            <div>
-              <span className="font-semibold">Bill To: </span>
-              <span>{saleData.customer.name}</span>
-            </div>
-            {saleData.customer.businessName && (
-              <div className="mt-1">
-                <span>{saleData.customer.businessName}</span>
-              </div>
+          {/* Customer Info */}
+          <div className="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">
+              Bill To
+            </p>
+            
+              <p className="font-semibold mb-1">
+                {saleData.customer.businessName}
+              </p>
+            
+            {saleData.customer?.address && (
+              <p className="text-sm">
+                {saleData.customer.address}
+              </p>
             )}
-            {saleData.customer.address && (
-              <div className="mt-1">
-                <span>{saleData.customer.address}</span>
-              </div>
+            {saleData.customer?.phone && (
+              <p className="text-sm text-gray-600 mt-1">
+                Phone: {saleData.customer.phone}
+              </p>
             )}
           </div>
 
-          <div className="mb-6">
+          {/* Products Table */}
+          <div className="mb-8">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-black">
-                  <th className="px-4 py-2 text-left text-sm">S.N</th>
-                  <th className="px-4 py-2 text-left text-sm">Product</th>
-                  <th className="px-4 py-2 text-right text-sm">Price</th>
-                  <th className="px-4 py-2 text-right text-sm">Quantity</th>
-                  <th className="px-4 py-2 text-right text-sm">Total</th>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    #
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Product
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Price
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Qty
+                  </th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Total
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {saleData.products.map((item, index) => (
-                  <tr key={index} className="border-b border-gray-300">
-                    <td className="px-4 py-3 text-sm">{index + 1}</td>
-                    <td className="px-4 py-3 text-sm">{item.product.name}</td>
-                    <td className="px-4 py-3 text-right text-sm">
-                      Rs. {item.price.toFixed(2)}
+                {saleData.products?.map((item, index) => (
+                  <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="px-4 py-4 text-sm text-gray-600">
+                      {index + 1}
                     </td>
-                    <td className="px-4 py-3 text-right text-sm">
-                      {item.quantity}
+                    <td className="px-4 py-4 text-sm font-medium text-gray-900">
+                      {item.product?.name || "N/A"}
                     </td>
-                    <td className="px-4 py-3 text-right font-medium text-sm">
-                      Rs. {(item.price * item.quantity).toFixed(2)}
+                    <td className="px-4 py-4 text-sm text-gray-700 text-right">
+                      Rs. {(item.price || 0).toFixed(2)}
+                    </td>
+                    <td className="px-4 py-4 text-sm text-gray-700 text-right">
+                      {item.quantity || 0}
+                    </td>
+                    <td className="px-4 py-4 text-sm font-semibold text-gray-900 text-right">
+                      Rs. {((item.price || 0) * (item.quantity || 0)).toFixed(2)}
                     </td>
                   </tr>
                 ))}
@@ -94,27 +140,40 @@ const SalesReceipt = ({ saleData, onClose }) => {
             </table>
           </div>
 
-          <div>
-            <div className="flex justify-end mb-6">
-              <div className="w-64">
-                <div className="flex justify-between py-2 px-4">
-                  <span className="font-bold">Total Amount:</span>
-                  <span className="font-bold">
-                    Rs. {totalAmount.toFixed(2)}
-                  </span>
+          {/* Totals */}
+          <div className="mb-8">
+            <div className="flex justify-end">
+              <div className="w-full sm:w-80">
+                <div className="space-y-2">
+                  
+                  <div className="flex justify-between py-3 px-4  mt-4">
+                    <span className="text-base font-bold text-gray-900">
+                      Total Amount:
+                    </span>
+                    <span className="text-lg font-bold text-gray-900">
+                      Rs. {totalAmount.toFixed(2)}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="text-center mb-6">
-              <div className="inline-block px-6 py-2 font-bold text-lg">
-                {saleData.paymentMethod === "cash" ? "PAID CASH" : "ON CREDIT"}
               </div>
             </div>
           </div>
 
-          <div className="border-t border-gray-300 pt-6 mt-6 text-center">
-            <p className="text-sm mb-2">Thank you for visiting us!</p>
+          {/* Payment Status */}
+          <div className="mb-8 text-center">
+            <div className="inline-block text-lg font-bold uppercase tracking-wide text-gray-900">
+              {saleData.paymentMethod === "cash" ? "Paid Cash" : "On Credit"}
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="border-t-2 border-gray-200 pt-6 text-center">
+              <p className="text-xs text-gray-500">
+              This is a computer generated receipt.
+            </p>
+            <p className="text-xs text-gray-500 mb-2">
+              Thank you for your business!
+            </p>
           </div>
         </div>
       </div>
