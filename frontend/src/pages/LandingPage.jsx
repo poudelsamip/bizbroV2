@@ -87,15 +87,10 @@ const LandingPage = () => {
     <div className="bg-white text-gray-900 overflow-hidden">
       {/* Navigation Bar */}
       <nav className="fixed top-0 inset-x-0 z-50 bg-white/70 backdrop-blur-xl border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 md:px-16 lg:px-24 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto  h-16 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2 font-extrabold text-xl">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center">
-              B
-            </div>
-            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              BIZBRO
-            </span>
+          <div className="flex items-center gap-2 font-extrabold text-2xl">
+            <span className="">👊 BIZBRO</span>
           </div>
 
           {/* Desktop Links */}
@@ -122,7 +117,7 @@ const LandingPage = () => {
             </Link>
             <Link
               to={"/register"}
-              className="px-5 py-2 text-sm font-semibold text-white rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-90 shadow-md"
+              className="px-5 py-2 text-sm font-semibold text-white rounded-full bg-linear-to-r from-blue-600 to-indigo-600 hover:opacity-90 shadow-md"
             >
               Get Started
             </Link>
@@ -169,7 +164,7 @@ const LandingPage = () => {
                 </Link>
                 <Link
                   to={"/register"}
-                  className="py-2 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow"
+                  className="py-2 rounded-full bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow"
                 >
                   Get Started
                 </Link>
@@ -183,7 +178,7 @@ const LandingPage = () => {
       <div className="relative min-h-[90vh] flex items-center bg-white pt-24 overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-32 left-1/2 -translate-x-1/2 w-[500px] h-[500px] md:w-[800px] md:h-[800px] bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 rounded-full blur-3xl opacity-50" />
+          <div className="absolute top-32 left-1/2 -translate-x-1/2 w-125 h-125 md:w-200 md:h-200 bg-linear-to-br from-blue-100 via-indigo-100 to-purple-100 rounded-full blur-3xl opacity-50" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16">
@@ -202,7 +197,7 @@ const LandingPage = () => {
 
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 leading-tight mb-6">
                 Run Your{" "}
-                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
                   Business
                 </span>{" "}
                 Smarter
@@ -248,7 +243,7 @@ const LandingPage = () => {
               className="relative flex justify-center"
             >
               <div className="w-full max-w-md md:max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-3">
+                <div className="bg-linear-to-r from-blue-600 to-indigo-600 p-3">
                   <div className="flex gap-2">
                     <span className="w-3 h-3 bg-red-400 rounded-full" />
                     <span className="w-3 h-3 bg-yellow-400 rounded-full" />
@@ -277,7 +272,7 @@ const LandingPage = () => {
                       {[40, 65, 45, 80, 55, 90, 75].map((h, i) => (
                         <div
                           key={i}
-                          className="flex-1 bg-gradient-to-t from-blue-600 to-indigo-600 rounded-md"
+                          className="flex-1 bg-linear-to-t from-blue-600 to-indigo-600 rounded-md"
                           style={{ height: `${h}%` }}
                         />
                       ))}
@@ -317,7 +312,7 @@ const LandingPage = () => {
       {/* Features Section */}
       <section
         id="features"
-        className="relative py-28 px-6 md:px-16 lg:px-24 bg-gradient-to-b from-white to-blue-50/40"
+        className="relative py-28 px-6 md:px-16 lg:px-24 bg-linear-to-b from-white to-blue-50/40"
       >
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
@@ -364,7 +359,7 @@ const LandingPage = () => {
                       alt={item.title}
                       className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition" />
                   </div>
                 </div>
 
@@ -413,7 +408,7 @@ const LandingPage = () => {
       {/* Testimonials Section */}
       <div
         id="testimonials"
-        className="relative py-32 px-6 md:px-16 lg:px-24 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"
+        className="relative py-32 px-6 md:px-16 lg:px-24 bg-linear-to-br from-blue-50 via-indigo-50 to-purple-50"
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -620,7 +615,7 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <div className="relative py-24 px-6 overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+      <div className="relative py-24 px-6 overflow-hidden bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
 
         <div className="relative max-w-4xl mx-auto text-center">
@@ -641,7 +636,7 @@ const LandingPage = () => {
       <div className="border-t-2 border-gray-200 px-6 md:px-16 lg:px-24 py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">
           <div>
-            <p className="text-4xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+            <p className="text-4xl font-black bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
               BIZBRO
             </p>
             <p className="text-gray-600 font-semibold">

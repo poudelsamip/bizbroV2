@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import { FcGoogle } from "react-icons/fc";
 
@@ -10,7 +10,6 @@ const Register = () => {
   const [error, setError] = useState("");
   const [verificationLoading, setVerificationLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [code, setCode] = useState("");
   const [dataEntered, setDataEntered] = useState(false);
 
@@ -19,176 +18,170 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
+
     try {
       if (!email || !password || !name) {
         setError("All fields are required");
+        setLoading(false);
         return;
       }
+
       if (await sendVerificationCode(email, "register", name, password)) {
         setDataEntered(true);
       } else {
         setError("User with this email already exists");
-        setLoading(false);
-        return;
       }
     } catch (error) {
       setError(error.response?.data?.message || "Registration failed");
     }
+
     setLoading(false);
   };
 
   const handleVerifyAndRegister = async () => {
     setVerificationLoading(true);
     setError("");
+
     try {
       await register(name, email, password, code);
       setError(regError);
     } catch (error) {
-      setError(error.response?.data?.message || "Registration Failed");
+      setError(error.response?.data?.message || "Registration failed");
     }
+
     setVerificationLoading(false);
   };
 
-  const handleLoginWithGoogle = async () => {
+  const handleLoginWithGoogle = () => {
     window.location.href = `${
       import.meta.env.VITE_BACKEND_URL
     }/api/auth/google`;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       {!dataEntered ? (
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200 p-8 lg:p-10">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Create Account
+        <div className="w-full max-w-sm bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+          <div className="text-center mb-5">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Create account
             </h2>
-            <p className="text-gray-600">Get started with BizBro today</p>
+            <p className="text-sm text-gray-500">Get started with bizbro</p>
           </div>
 
           <button
             onClick={handleLoginWithGoogle}
-            className="flex items-center justify-center gap-3 w-full bg-white hover:bg-gray-50 border-2 border-gray-300 py-3 px-4 rounded-lg font-medium text-gray-700 transition-all mb-6 shadow-sm hover:shadow"
+            className="flex items-center justify-center gap-2 w-full border border-gray-200 py-2.5 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition mb-4"
           >
-            <FcGoogle size={24} />
-            <span>Continue With Google</span>
+            <FcGoogle size={20} />
+            Continue with Google
           </button>
 
-          <div className="relative my-6">
+          <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-gray-100" />
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or sign up with email</span>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-white px-2 text-gray-400">or</span>
             </div>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm text-center">
+            <div className="mb-3 p-2 bg-red-50 border border-red-200 rounded-md text-xs text-red-700 text-center">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
+              <label className="block text-xs font-medium text-gray-600 mb-1">
+                Full name
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+              <label className="block text-xs font-medium text-gray-600 mb-1">
+                Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-600 mb-1">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Create a strong password"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 required
               />
             </div>
 
             <button
               type="submit"
-              className="cursor-pointer w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+              className="w-full py-2.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition"
             >
-              {loading ? "Creating Account..." : "Create Account"}
+              {loading ? "loading..." : "Create account"}
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm">
-            <p className="text-gray-600">
-              Already have an account?{" "}
-              <Link to="/login" className="text-blue-600 hover:text-blue-700 font-semibold">
-                Sign in
-              </Link>
-            </p>
-          </div>
+          <p className="mt-4 text-center text-xs text-gray-500">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-blue-600 font-medium hover:underline"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
       ) : (
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200 p-8 lg:p-10">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Verify Your Email
+        <div className="w-full max-w-sm bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+          <div className="text-center mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Verify email
             </h2>
-            <p className="text-gray-600 text-sm mb-2">
-              A verification email has been sent to
-            </p>
-            <p className="text-gray-900 font-medium">{email}</p>
-            <p className="text-gray-500 text-xs mt-2">
-              Please check your inbox and enter the code below
-            </p>
+            <p className="text-xs text-gray-500">Code sent to</p>
+            <p className="text-sm font-medium text-gray-900">{email}</p>
           </div>
-          
-          <div className="space-y-5">
+
+          <div className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              <div className="p-2 bg-red-50 border border-red-200 rounded-md text-xs text-red-700">
                 {error}
               </div>
             )}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Verification Code
-              </label>
-              <input
-                type="text"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="Enter 6-digit code"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-center text-lg tracking-widest"
-                required
-              />
-            </div>
+
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="123456"
+              className="w-full px-3 py-2.5 border border-gray-200 rounded-md text-center text-sm tracking-widest focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+
             <button
-              type="submit"
               onClick={handleVerifyAndRegister}
-              className="cursor-pointer w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+              className="w-full py-2.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition"
             >
-              {!verificationLoading ? "Verify & Complete Registration" : "Verifying..."}
+              {verificationLoading ? "Verifying..." : "Verify & Continue"}
             </button>
           </div>
         </div>
