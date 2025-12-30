@@ -16,37 +16,39 @@ import axios from "axios";
 import SellProduct from "./pages/SellProduct";
 import Profile from "./pages/Profile";
 import ForgotPassword from "./pages/auth/ForgotPassword";
+import NotFound from "./pages/NotFound";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgotpassword" element={<ForgotPassword />} />
+    return (
+        <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-      <Route
-        element={
-          <ProtectedRoute>
-            <Layout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/sales" element={<Sales />} />
-        <Route path="/customers" element={<Customers />} />
-        <Route path="/sell" element={<SellProduct />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/purchases" element={<Purchases />} />
-        <Route path="/suppliers" element={<Supplires />} />
-        <Route path="/transactions" element={<Transaction />} />
-        <Route path="/profile" element={<Profile />} />
-      </Route>
-    </Routes>
-  );
+            <Route
+                element={
+                    <ProtectedRoute>
+                        <Layout />
+                    </ProtectedRoute>
+                }
+            >
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/sales" element={<Sales />} />
+                <Route path="/customers" element={<Customers />} />
+                <Route path="/sell" element={<SellProduct />} />
+                <Route path="/inventory" element={<Inventory />} />
+                <Route path="/purchases" element={<Purchases />} />
+                <Route path="/suppliers" element={<Supplires />} />
+                <Route path="/transactions" element={<Transaction />} />
+                <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+    );
 }
 
 export default App;
